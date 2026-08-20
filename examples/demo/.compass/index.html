@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Compass</title>
+<style>
+:root{--bg:#fff;--fg:#16181d;--mut:#666e7a;--line:#e3e6ea;--card:#f7f8fa;--acc:#1f6feb;--warn:#b45309;--warnbg:#fff7e6}
+@media (prefers-color-scheme:dark){:root{--bg:#0f1115;--fg:#e6e8ec;--mut:#9aa3ad;--line:#262b33;--card:#161a20;--acc:#5b9dff;--warn:#f0b429;--warnbg:#2a2110}}
+*{box-sizing:border-box}
+body{margin:0;padding:1.25rem;background:var(--bg);color:var(--fg);font:15px/1.5 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+main{max-width:1080px;margin:0 auto}
+h1{font-size:1.05rem;margin:0 0 .25rem;letter-spacing:.02em;text-transform:uppercase;color:var(--mut)}
+h2{font-size:1rem;margin:2rem 0 .6rem}
+a{color:var(--acc)}
+.north{font-size:1.5rem;font-weight:650;margin:0 0 .75rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:1rem}
+.row{display:flex;flex-wrap:wrap;gap:.5rem 1rem;align-items:center}
+.mut{color:var(--mut);font-size:.85rem}
+.bar{height:6px;background:var(--line);border-radius:99px;overflow:hidden;flex:1;min-width:120px}
+.bar>i{display:block;height:100%;background:var(--acc)}
+ul{margin:.5rem 0;padding-left:1.15rem}
+.warn{background:var(--warnbg);border:1px solid var(--warn);border-radius:8px;padding:.75rem 1rem;margin:1rem 0}
+.warn b{color:var(--warn)}
+input,select{background:var(--bg);color:var(--fg);border:1px solid var(--line);border-radius:6px;padding:.4rem .55rem;font:inherit}
+input[type=search]{flex:1;min-width:180px}
+table{width:100%;border-collapse:collapse;margin-top:.75rem;font-size:.92rem}
+th,td{text-align:left;padding:.5rem;border-bottom:1px solid var(--line);vertical-align:top}
+th{cursor:pointer;user-select:none;color:var(--mut);font-weight:600;white-space:nowrap}
+tbody tr.h{cursor:pointer}
+tbody tr.h:hover{background:var(--card)}
+.tag{display:inline-block;border:1px solid var(--line);border-radius:99px;padding:0 .45rem;font-size:.75rem;color:var(--mut);margin-right:.25rem}
+.det{background:var(--card)}
+.det h4{margin:.6rem 0 .2rem;font-size:.85rem;text-transform:uppercase;letter-spacing:.03em;color:var(--mut)}
+.det p,.det li{margin:.25rem 0}
+pre,code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.85em}
+.pg{display:flex;gap:.5rem;align-items:center;margin-top:.75rem}
+button{background:var(--card);color:var(--fg);border:1px solid var(--line);border-radius:6px;padding:.35rem .7rem;font:inherit;cursor:pointer}
+button[disabled]{opacity:.4;cursor:default}
+.mod{border-bottom:1px solid var(--line);padding:.75rem 0}
+.mod summary{cursor:pointer;font-weight:600}
+@media (max-width:640px){.hide-s{display:none}body{padding:.75rem}}
+</style>
+</head>
+<body>
+<main>
+  <h1>Compass</h1>
+  <div id="goal"></div>
+  <div id="alerts"></div>
+
+  <h2>Decisions</h2>
+  <div class="row">
+    <input type="search" id="q" placeholder="search title, context, decision, alternatives...">
+    <select id="fstatus"></select>
+    <select id="fprov"></select>
+    <select id="fmod"></select>
+  </div>
+  <table>
+    <thead><tr>
+      <th data-k="id">#</th>
+      <th data-k="title">Title</th>
+      <th data-k="date">Date</th>
+      <th data-k="status">Status</th>
+      <th data-k="module" class="hide-s">Module</th>
+      <th data-k="provenance" class="hide-s">Provenance</th>
+    </tr></thead>
+    <tbody id="rows"></tbody>
+  </table>
+  <div class="pg"><button id="prev">Prev</button><span id="pginfo" class="mut"></span><button id="next">Next</button></div>
+
+  <h2>Modules</h2>
+  <div id="mods"></div>
+
+  <p class="mut" id="gen"></p>
+</main>
+<script src="./data.js"></script>
+<script>
+const D = window.COMPASS || {goal:{},decisions:[],modules:[],generated:''};
+const ESC = {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'};
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ESC[c]);
+const today = new Date().toISOString().slice(0,10);
+
+// tiny markdown: bold, code, links, lists, ### subheads, paragraphs
+function md(t){
+  const lines = esc(t).split(/\r?\n/);
+  let out = '', list = false;
+  const inl = s => s.replace(/`([^`]+)`/g, '<code>$1</code>')
+    .replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>')
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+  for (const l of lines) {
+    const li = /^\s*[-*]\s+(.*)$/.exec(l);
+    if (li) { if (!list) { out += '<ul>'; list = true; } out += '<li>' + inl(li[1]) + '</li>'; continue; }
+    if (list) { out += '</ul>'; list = false; }
+    const h = /^\s*#{3,}\s+(.*)$/.exec(l);
+    if (h) { out += '<h4>' + inl(h[1]) + '</h4>'; continue; }
+    if (l.trim()) out += '<p>' + inl(l) + '</p>';
+  }
+  if (list) out += '</ul>';
+  return out;
+}
+
+// goal header
+(function(){
+  const g = D.goal || {};
+  const pct = Math.max(0, Math.min(100, Number(g.progress) || 0));
+  document.getElementById('goal').innerHTML = '<div class="card">' +
+    '<p class="north">' + esc(g.north_star || 'No north star set - run /compass:init') + '</p>' +
+    (g.milestone ? '<div class="row"><b>' + esc(g.milestone) + '</b><div class="bar"><i style="width:' + pct + '%"></i></div><span class="mut">' + pct + '%</span></div>' : '') +
+    (g.next_steps && g.next_steps.length ? '<ul>' + g.next_steps.map(s => '<li>' + esc(s) + '</li>').join('') + '</ul>' : '') +
+    (g.updated ? '<p class="mut">goal updated ' + esc(g.updated) + '</p>' : '') +
+    '</div>';
+})();
+
+// alerts: overdue reviews + stale build
+(function(){
+  const out = [];
+  const dead = d => d.status === 'superseded' || d.status === 'deprecated';
+  const due = D.decisions.filter(d => d.review_date && d.review_date <= today && !dead(d));
+  if (due.length) out.push('<div class="warn"><b>' + due.length + ' decision' + (due.length > 1 ? 's' : '') + ' due for review.</b><ul>' +
+    due.map(d => '<li>#' + esc(d.id) + ' ' + esc(d.title) + ' - due ' + esc(d.review_date) + '</li>').join('') + '</ul></div>');
+  if (D.generated) {
+    const days = Math.floor((Date.now() - new Date(D.generated)) / 864e5);
+    if (days > 14) out.push('<div class="warn"><b>Stale.</b> Dashboard last built ' + days + ' days ago - run /compass:sync.</div>');
+  }
+  document.getElementById('alerts').innerHTML = out.join('');
+  document.getElementById('gen').textContent = D.generated ? 'generated ' + D.generated.replace('T', ' ').slice(0, 16) : '';
+})();
+
+// decisions table
+const S = {q:'', status:'', prov:'', mod:'', key:'date', dir:-1, page:0, per:20, open:null};
+
+function fill(id, label, vals){
+  const uniq = [...new Set(vals.filter(Boolean))].sort();
+  document.getElementById(id).innerHTML = '<option value="">' + label + '</option>' +
+    uniq.map(v => '<option>' + esc(v) + '</option>').join('');
+}
+fill('fstatus', 'all statuses', D.decisions.map(d => d.status));
+fill('fprov', 'all provenance', D.decisions.map(d => d.provenance));
+fill('fmod', 'all modules', D.decisions.map(d => d.module));
+
+function view(){
+  return D.decisions.filter(d =>
+    (!S.q || d.search.includes(S.q)) &&
+    (!S.status || d.status === S.status) &&
+    (!S.prov || d.provenance === S.prov) &&
+    (!S.mod || d.module === S.mod)
+  ).sort((a, b) => String(a[S.key]).localeCompare(String(b[S.key]), undefined, {numeric:true}) * S.dir);
+}
+
+function render(){
+  const v = view();
+  const pages = Math.max(1, Math.ceil(v.length / S.per));
+  S.page = Math.min(S.page, pages - 1);
+  const page = v.slice(S.page * S.per, S.page * S.per + S.per);
+  document.getElementById('rows').innerHTML = page.map(d => {
+    const head = '<tr class="h" data-f="' + esc(d.file) + '">' +
+      '<td>' + esc(d.id) + '</td>' +
+      '<td>' + esc(d.title) + (d.tags.length ? '<br>' + d.tags.map(t => '<span class="tag">' + esc(t) + '</span>').join('') : '') + '</td>' +
+      '<td>' + esc(d.date) + '</td><td>' + esc(d.status) + '</td>' +
+      '<td class="hide-s">' + esc(d.module) + '</td><td class="hide-s">' + esc(d.provenance) + '</td></tr>';
+    if (S.open !== d.file) return head;
+    const body = d.sections.map(s => '<h4>' + esc(s.heading) + '</h4>' + md(s.body)).join('') +
+      (d.links.length ? '<h4>Links</h4><ul>' + d.links.map(l => '<li>' + md(l) + '</li>').join('') + '</ul>' : '') +
+      (d.superseded_by ? '<h4>Superseded by</h4><p>' + esc(d.superseded_by) + '</p>' : '') +
+      (d.review_date ? '<p class="mut">review due ' + esc(d.review_date) + '</p>' : '') +
+      '<p class="mut">.compass/decisions/' + esc(d.file) + '</p>';
+    return head + '<tr class="det"><td></td><td colspan="5">' + body + '</td></tr>';
+  }).join('') || '<tr><td colspan="6" class="mut">No decisions match.</td></tr>';
+  document.getElementById('pginfo').textContent = v.length + ' record' + (v.length === 1 ? '' : 's') + ' - page ' + (S.page + 1) + '/' + pages;
+  document.getElementById('prev').disabled = S.page === 0;
+  document.getElementById('next').disabled = S.page >= pages - 1;
+}
+
+document.getElementById('q').addEventListener('input', e => { S.q = e.target.value.toLowerCase(); S.page = 0; render(); });
+[['fstatus','status'], ['fprov','prov'], ['fmod','mod']].forEach(([id, k]) =>
+  document.getElementById(id).addEventListener('change', e => { S[k] = e.target.value; S.page = 0; render(); }));
+document.querySelectorAll('th[data-k]').forEach(th => th.addEventListener('click', () => {
+  const k = th.dataset.k;
+  S.dir = S.key === k ? -S.dir : 1;
+  S.key = k;
+  render();
+}));
+document.getElementById('rows').addEventListener('click', e => {
+  const tr = e.target.closest('tr.h');
+  if (!tr) return;
+  S.open = S.open === tr.dataset.f ? null : tr.dataset.f;
+  render();
+});
+document.getElementById('prev').onclick = () => { S.page--; render(); };
+document.getElementById('next').onclick = () => { S.page++; render(); };
+render();
+
+// modules
+document.getElementById('mods').innerHTML = D.modules.map(m => {
+  const rel = D.decisions.filter(d => d.module === m.name);
+  return '<details class="mod"><summary>' + esc(m.title) + ' <span class="mut">(' + rel.length + ' decision' + (rel.length === 1 ? '' : 's') + ')</span></summary>' +
+    md(m.body) +
+    (rel.length ? '<h4>Decisions</h4><ul>' + rel.map(d => '<li>#' + esc(d.id) + ' ' + esc(d.title) + '</li>').join('') + '</ul>' : '') +
+    (m.source ? '<p class="mut">source: ' + esc(m.source) + '</p>' : '') +
+    '</details>';
+}).join('') || '<p class="mut">No module docs yet.</p>';
+</script>
+</body>
+</html>

@@ -87,6 +87,25 @@ Full schema and the append-only rules: [`docs/SCHEMA.md`](docs/SCHEMA.md).
 - Nothing is deleted. Corrections are new records.
 - It never invents a rationale. No evidence, no record.
 
+## Try it without installing
+
+A seeded sandbox project lives in `examples/demo` — ten decision records across
+three modules, including an overdue review, a superseded pair, and a `proposed`
+record left behind by inference.
+
+```
+node scripts/demo.mjs            # seed, build, open the dashboard
+node scripts/demo.mjs --build    # rebuild after editing the markdown
+node scripts/demo.mjs --status   # what /compass:status prints
+node scripts/demo.mjs --hook     # what the Stop hook returns, in four situations
+node scripts/demo.mjs --reset    # throw the sandbox away and re-seed
+```
+
+Edit `examples/demo/.compass/decisions/*.md`, rerun `--build`, refresh the page.
+`--hook` feeds the real hook the same JSON Claude Code would, and prints the
+answer for a bare folder, an opted-in project, a repeat in the same session, and
+a nested stop — no plugin install, no project touched.
+
 ## Development
 
 ```

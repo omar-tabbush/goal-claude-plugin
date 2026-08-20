@@ -1,0 +1,11 @@
+{
+  "north_star": "One dashboard that answers \"why is it like this?\" without asking anyone.",
+  "milestone": "v1 - init pipeline + auto-sync",
+  "progress": 65,
+  "next_steps": [
+    "Run init against a real repo and count how much of the vault survives the import",
+    "Watch one week of Stop-hook syncs - if it records noise, tighten the six-month filter",
+    "Decide whether /compass:decide is needed or auto-sync is enough"
+  ],
+  "updated": "2026-08-18"
+}

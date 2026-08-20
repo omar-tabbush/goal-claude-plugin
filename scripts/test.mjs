@@ -69,12 +69,13 @@ assert.match(status, /REVIEW DUE:\s*\n\s*- #0001/, 'overdue review surfaces');
 
 // hook: silent where no .compass/, blocks once where there is
 const stop = join(here, '..', 'hooks', 'stop.mjs');
+const sid = 'test-' + process.pid;  // unique per run: markers live in tmpdir and outlive the process
 const run = (payload) => execFileSync(node, [stop], { input: JSON.stringify(payload), encoding: 'utf8' });
-assert.equal(run({ cwd: tmpdir(), session_id: 's1' }).trim(), '', 'no .compass -> silent');
-const first = JSON.parse(run({ cwd: proj, session_id: 's2' }));
+assert.equal(run({ cwd: tmpdir(), session_id: sid + 'a' }).trim(), '', 'no .compass -> silent');
+const first = JSON.parse(run({ cwd: proj, session_id: sid + 'b' }));
 assert.equal(first.decision, 'block');
 assert.match(first.reason, /SYNC\.md/);
-assert.equal(run({ cwd: proj, session_id: 's2' }).trim(), '', 'same session -> blocks only once');
-assert.equal(run({ cwd: proj, session_id: 's3', stop_hook_active: true }).trim(), '', 'stop_hook_active -> silent');
+assert.equal(run({ cwd: proj, session_id: sid + 'b' }).trim(), '', 'same session -> blocks only once');
+assert.equal(run({ cwd: proj, session_id: sid + 'c', stop_hook_active: true }).trim(), '', 'stop_hook_active -> silent');
 
 console.log('ok - ' + proj);
