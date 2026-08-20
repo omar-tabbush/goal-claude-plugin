@@ -5,80 +5,204 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Compass</title>
 <style>
-:root{--bg:#fff;--fg:#16181d;--mut:#666e7a;--line:#e3e6ea;--card:#f7f8fa;--acc:#1f6feb;--warn:#b45309;--warnbg:#fff7e6}
-@media (prefers-color-scheme:dark){:root{--bg:#0f1115;--fg:#e6e8ec;--mut:#9aa3ad;--line:#262b33;--card:#161a20;--acc:#5b9dff;--warn:#f0b429;--warnbg:#2a2110}}
+:root{
+  --bg:#0b0b0c; --panel:#141416; --panel2:#1b1b1e; --line:#26262a;
+  --fg:#f4f4f5; --mut:#8b8b93; --dim:#5f5f68;
+  --lime:#c6f24e; --orange:#ff8a1f; --white:#ffffff; --red:#ff5c5c;
+  --r:20px;
+}
 *{box-sizing:border-box}
-body{margin:0;padding:1.25rem;background:var(--bg);color:var(--fg);font:15px/1.5 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
-main{max-width:1080px;margin:0 auto}
-h1{font-size:1.05rem;margin:0 0 .25rem;letter-spacing:.02em;text-transform:uppercase;color:var(--mut)}
-h2{font-size:1rem;margin:2rem 0 .6rem}
-a{color:var(--acc)}
-.north{font-size:1.5rem;font-weight:650;margin:0 0 .75rem}
-.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:1rem}
-.row{display:flex;flex-wrap:wrap;gap:.5rem 1rem;align-items:center}
-.mut{color:var(--mut);font-size:.85rem}
-.bar{height:6px;background:var(--line);border-radius:99px;overflow:hidden;flex:1;min-width:120px}
-.bar>i{display:block;height:100%;background:var(--acc)}
-ul{margin:.5rem 0;padding-left:1.15rem}
-.warn{background:var(--warnbg);border:1px solid var(--warn);border-radius:8px;padding:.75rem 1rem;margin:1rem 0}
-.warn b{color:var(--warn)}
-input,select{background:var(--bg);color:var(--fg);border:1px solid var(--line);border-radius:6px;padding:.4rem .55rem;font:inherit}
-input[type=search]{flex:1;min-width:180px}
-table{width:100%;border-collapse:collapse;margin-top:.75rem;font-size:.92rem}
-th,td{text-align:left;padding:.5rem;border-bottom:1px solid var(--line);vertical-align:top}
-th{cursor:pointer;user-select:none;color:var(--mut);font-weight:600;white-space:nowrap}
-tbody tr.h{cursor:pointer}
-tbody tr.h:hover{background:var(--card)}
-.tag{display:inline-block;border:1px solid var(--line);border-radius:99px;padding:0 .45rem;font-size:.75rem;color:var(--mut);margin-right:.25rem}
-.det{background:var(--card)}
-.det h4{margin:.6rem 0 .2rem;font-size:.85rem;text-transform:uppercase;letter-spacing:.03em;color:var(--mut)}
-.det p,.det li{margin:.25rem 0}
-pre,code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.85em}
-.pg{display:flex;gap:.5rem;align-items:center;margin-top:.75rem}
-button{background:var(--card);color:var(--fg);border:1px solid var(--line);border-radius:6px;padding:.35rem .7rem;font:inherit;cursor:pointer}
-button[disabled]{opacity:.4;cursor:default}
-.mod{border-bottom:1px solid var(--line);padding:.75rem 0}
-.mod summary{cursor:pointer;font-weight:600}
-@media (max-width:640px){.hide-s{display:none}body{padding:.75rem}}
+html,body{background:#0b0b0c}
+body{
+  margin:0;padding:clamp(.75rem,2vw,1.75rem);color:var(--fg);
+  font:14px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+main{max-width:1200px;margin:0 auto;background:var(--bg);border-radius:28px}
+a{color:var(--lime)}
+h2{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--mut);margin:0 0 .75rem;font-weight:700}
+
+/* top bar */
+.top{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;margin-bottom:1.5rem}
+.logo{width:38px;height:38px;border-radius:50%;background:var(--white);color:#0b0b0c;display:grid;place-items:center;font-weight:800;font-size:1rem;flex:none}
+.pill{background:var(--panel);border:1px solid var(--line);border-radius:99px;padding:.5rem .95rem;color:var(--fg);font:inherit;font-weight:600;font-size:.82rem}
+.top .spacer{flex:1}
+.who{text-align:right;line-height:1.25}
+.who b{display:block;font-size:.85rem}
+.who span{color:var(--mut);font-size:.75rem}
+
+/* hero */
+.hero{display:flex;align-items:flex-start;gap:1rem;flex-wrap:wrap;margin-bottom:1.1rem}
+.hero h1{font-size:clamp(1.8rem,4.2vw,2.9rem);line-height:1;margin:0;letter-spacing:-.02em;font-weight:800;text-transform:uppercase}
+.hero p{margin:.55rem 0 0;color:var(--mut);max-width:56ch}
+.hero .right{margin-left:auto;display:flex;gap:.5rem;flex-wrap:wrap}
+
+/* grid + cards */
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:.9rem}
+.card{background:var(--panel);border-radius:var(--r);padding:1.1rem 1.2rem;min-width:0}
+.card>header{display:flex;align-items:center;justify-content:space-between;margin-bottom:.85rem}
+.card>header h3{margin:0;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--mut);font-weight:700}
+.dots{color:var(--dim);letter-spacing:.1em}
+.c3{grid-column:span 3}.c4{grid-column:span 4}.c5{grid-column:span 5}.c6{grid-column:span 6}.c8{grid-column:span 8}.c12{grid-column:span 12}
+
+/* stat tiles */
+.stat{font-size:clamp(1.7rem,3.6vw,2.4rem);font-weight:800;letter-spacing:-.03em;line-height:1}
+.stat.lime{color:var(--lime)}.stat.orange{color:var(--orange)}
+.sub{color:var(--mut);font-size:.78rem;margin-top:.3rem}
+.pair{display:flex;gap:1.6rem}
+.tri{font-size:.65rem;vertical-align:middle}
+.tri.up{color:var(--lime)}.tri.down{color:var(--orange)}
+
+/* progress */
+.bar{height:10px;border-radius:99px;background:var(--panel2);overflow:hidden;margin:.7rem 0 .5rem}
+.bar>i{display:block;height:100%;background:var(--lime);border-radius:99px}
+.steps{margin:.6rem 0 0;padding:0;list-style:none}
+.steps li{display:flex;gap:.55rem;padding:.3rem 0;color:var(--mut);font-size:.82rem;border-top:1px solid var(--line)}
+.steps li:first-child{border-top:0}
+.steps b{color:var(--lime);font-weight:700}
+
+/* review alerts */
+.alert{background:var(--panel);border-radius:var(--r);padding:1.1rem 1.2rem;border-left:4px solid var(--orange)}
+.alert.stale{border-left-color:var(--red)}
+.alert h3{margin:0 0 .5rem;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--orange);font-weight:700}
+.alert.stale h3{color:var(--red)}
+.alert ul{margin:0;padding-left:1.1rem;color:var(--mut)}
+.alert li{margin:.15rem 0}
+.alert li b{color:var(--fg)}
+
+/* controls */
+.controls{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:.9rem}
+input[type=search]{flex:1;min-width:200px}
+input,select{background:var(--panel2);border:1px solid var(--line);border-radius:99px;color:var(--fg);font:inherit;font-size:.82rem;padding:.5rem .95rem;outline:none}
+input:focus,select:focus{border-color:var(--lime)}
+select{cursor:pointer;-webkit-appearance:none;appearance:none;padding-right:1.6rem;
+  background-image:linear-gradient(45deg,transparent 50%,var(--mut) 50%),linear-gradient(135deg,var(--mut) 50%,transparent 50%);
+  background-position:calc(100% - 14px) 52%,calc(100% - 9px) 52%;background-size:5px 5px,5px 5px;background-repeat:no-repeat}
+option{background:var(--panel2)}
+
+/* table */
+table{width:100%;border-collapse:separate;border-spacing:0 .4rem}
+th{text-align:left;padding:0 .8rem .2rem;font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);font-weight:700;cursor:pointer;user-select:none;white-space:nowrap}
+th:hover{color:var(--mut)}
+th.on{color:var(--lime)}
+td{padding:.7rem .8rem;background:var(--panel2);vertical-align:middle}
+tr.h{cursor:pointer}
+tr.h:hover td{background:#212126}
+tr.h td:first-child{border-radius:14px 0 0 14px;color:var(--dim);font-variant-numeric:tabular-nums;width:1%}
+tr.h td:last-child{border-radius:0 14px 14px 0}
+tr.h.open td{background:#212126}
+tr.h.open td:first-child{border-radius:14px 0 0 0}
+tr.h.open td:last-child{border-radius:0 14px 0 0}
+.ttl{font-weight:650}
+.tags{margin-top:.25rem}
+.tag{display:inline-block;border:1px solid var(--line);border-radius:99px;padding:.05rem .5rem;font-size:.68rem;color:var(--mut);margin:.15rem .25rem 0 0}
+.badge{display:inline-block;border-radius:99px;padding:.15rem .65rem;font-size:.7rem;font-weight:700;white-space:nowrap}
+.b-accepted{background:var(--lime);color:#12200a}
+.b-proposed{background:var(--orange);color:#241000}
+.b-superseded,.b-deprecated{background:var(--white);color:#111}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:.45rem;vertical-align:middle}
+.p-human{background:var(--lime)}.p-ai-suggested{background:var(--orange)}
+.p-inferred-from-code{background:var(--white)}.p-mcq-answer{background:#7aa7ff}
+.due{color:var(--orange);font-size:.7rem;font-weight:700;white-space:nowrap}
+td.det{background:#1f1f24;border-radius:0 0 14px 14px}
+.det h4{margin:.9rem 0 .2rem;font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--lime);font-weight:700}
+.det h4:first-child{margin-top:0}
+.det p,.det li{margin:.25rem 0;color:#d5d5da}
+.det ul{margin:.2rem 0;padding-left:1.1rem}
+.det .path{color:var(--dim);font-size:.72rem;margin-top:.9rem}
+code{background:#0f0f11;border:1px solid var(--line);border-radius:6px;padding:.05rem .3rem;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.82em}
+.empty{color:var(--mut);padding:1.5rem .8rem;text-align:center;background:var(--panel2);border-radius:14px}
+
+/* legend / footer row */
+.legend{display:flex;align-items:center;gap:1.1rem;flex-wrap:wrap;margin-top:.9rem;padding-top:.9rem;border-top:1px solid var(--line);font-size:.76rem;color:var(--mut)}
+.legend .total{margin-left:auto;color:var(--mut)}
+.legend .total b{color:var(--fg)}
+.pg{display:flex;gap:.5rem;align-items:center}
+button{background:var(--panel2);border:1px solid var(--line);color:var(--fg);border-radius:99px;padding:.35rem .9rem;font:inherit;font-size:.78rem;font-weight:600;cursor:pointer}
+button:hover:not([disabled]){border-color:var(--lime);color:var(--lime)}
+button[disabled]{opacity:.35;cursor:default}
+
+/* modules */
+.mod{background:var(--panel2);border-radius:14px;padding:.85rem 1rem;margin-bottom:.5rem}
+.mod summary{cursor:pointer;font-weight:700;list-style:none;display:flex;align-items:center;gap:.6rem}
+.mod summary::-webkit-details-marker{display:none}
+.mod summary::before{content:"+";color:var(--lime);font-weight:800;width:1rem}
+.mod[open] summary::before{content:"\2212"}
+.mod summary .count{margin-left:auto;color:var(--mut);font-size:.75rem;font-weight:600}
+.mod .body{padding-top:.5rem;color:#d5d5da}
+.mod .body h4{margin:.8rem 0 .2rem;font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--lime)}
+.gen{color:var(--dim);font-size:.72rem;text-align:right;margin:1.2rem .3rem 0}
+
+@media (max-width:900px){.c3,.c4,.c5,.c6,.c8{grid-column:span 12}}
+@media (max-width:640px){
+  .hide-s{display:none}
+  main{border-radius:0}
+  td{padding:.6rem}
+}
 </style>
 </head>
 <body>
 <main>
-  <h1>Compass</h1>
-  <div id="goal"></div>
-  <div id="alerts"></div>
-
-  <h2>Decisions</h2>
-  <div class="row">
-    <input type="search" id="q" placeholder="search title, context, decision, alternatives...">
-    <select id="fstatus"></select>
-    <select id="fprov"></select>
-    <select id="fmod"></select>
+  <div class="top">
+    <div class="logo">C</div>
+    <span class="pill">Compass</span>
+    <span class="pill" id="pcount">-</span>
+    <div class="spacer"></div>
+    <div class="who"><b id="pname">Project</b><span id="pupdated"></span></div>
   </div>
-  <table>
-    <thead><tr>
-      <th data-k="id">#</th>
-      <th data-k="title">Title</th>
-      <th data-k="date">Date</th>
-      <th data-k="status">Status</th>
-      <th data-k="module" class="hide-s">Module</th>
-      <th data-k="provenance" class="hide-s">Provenance</th>
-    </tr></thead>
-    <tbody id="rows"></tbody>
-  </table>
-  <div class="pg"><button id="prev">Prev</button><span id="pginfo" class="mut"></span><button id="next">Next</button></div>
 
-  <h2>Modules</h2>
+  <div class="hero">
+    <div>
+      <h1 id="h1">Compass</h1>
+      <p id="north"></p>
+    </div>
+    <div class="right" id="herostats"></div>
+  </div>
+
+  <div class="grid" id="top-grid"></div>
+
+  <h2 style="margin-top:1.6rem">Decisions</h2>
+  <div class="card c12">
+    <div class="controls">
+      <input type="search" id="q" placeholder="search title, context, decision, alternatives...">
+      <select id="fstatus"></select>
+      <select id="fprov"></select>
+      <select id="fmod"></select>
+    </div>
+    <table>
+      <thead><tr>
+        <th data-k="id">#</th>
+        <th data-k="title">Decision</th>
+        <th data-k="date">Date</th>
+        <th data-k="status">Status</th>
+        <th data-k="module" class="hide-s">Module</th>
+        <th data-k="provenance" class="hide-s">Provenance</th>
+      </tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+    <div class="legend">
+      <span><i class="dot p-human"></i>human</span>
+      <span><i class="dot p-ai-suggested"></i>ai-suggested</span>
+      <span><i class="dot p-inferred-from-code"></i>inferred</span>
+      <span><i class="dot p-mcq-answer"></i>mcq</span>
+      <div class="pg"><button id="prev">Prev</button><span id="pginfo"></span><button id="next">Next</button></div>
+      <span class="total">Total: <b id="total">0</b></span>
+    </div>
+  </div>
+
+  <h2 style="margin-top:1.6rem">Modules</h2>
   <div id="mods"></div>
 
-  <p class="mut" id="gen"></p>
+  <p class="gen" id="gen"></p>
 </main>
+
 <script src="./data.js"></script>
 <script>
-const D = window.COMPASS || {goal:{},decisions:[],modules:[],generated:''};
+const D = window.COMPASS || {goal:{}, decisions:[], modules:[], generated:''};
 const ESC = {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'};
 const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ESC[c]);
 const today = new Date().toISOString().slice(0,10);
+const el = id => document.getElementById(id);
 
 // tiny markdown: bold, code, links, lists, ### subheads, paragraphs
 function md(t){
@@ -99,44 +223,73 @@ function md(t){
   return out;
 }
 
-// goal header
+const dead = d => d.status === 'superseded' || d.status === 'deprecated';
+const due = D.decisions.filter(d => d.review_date && d.review_date <= today && !dead(d));
+const proposed = D.decisions.filter(d => d.status === 'proposed');
+const live = D.decisions.filter(d => !dead(d));
+const staleDays = D.generated ? Math.floor((Date.now() - new Date(D.generated)) / 864e5) : 0;
+
+// header
+(function(){
+  const g = D.goal || {};
+  el('pname').textContent = g.milestone || 'Project';
+  el('pupdated').textContent = g.updated ? 'goal updated ' + g.updated : '';
+  el('pcount').textContent = D.decisions.length + ' decisions';
+  el('north').textContent = g.north_star || 'No north star set - run /compass:init';
+  el('herostats').innerHTML =
+    '<span class="pill">Modules: <b>' + D.modules.length + '</b></span>' +
+    '<span class="pill">Proposed: <b style="color:var(--orange)">' + proposed.length + '</b></span>' +
+    '<span class="pill">Due: <b style="color:' + (due.length ? 'var(--orange)' : 'var(--lime)') + '">' + due.length + '</b></span>';
+})();
+
+// top grid: stat tiles + milestone + alerts
 (function(){
   const g = D.goal || {};
   const pct = Math.max(0, Math.min(100, Number(g.progress) || 0));
-  document.getElementById('goal').innerHTML = '<div class="card">' +
-    '<p class="north">' + esc(g.north_star || 'No north star set - run /compass:init') + '</p>' +
-    (g.milestone ? '<div class="row"><b>' + esc(g.milestone) + '</b><div class="bar"><i style="width:' + pct + '%"></i></div><span class="mut">' + pct + '%</span></div>' : '') +
-    (g.next_steps && g.next_steps.length ? '<ul>' + g.next_steps.map(s => '<li>' + esc(s) + '</li>').join('') + '</ul>' : '') +
-    (g.updated ? '<p class="mut">goal updated ' + esc(g.updated) + '</p>' : '') +
-    '</div>';
-})();
+  const cards = [];
 
-// alerts: overdue reviews + stale build
-(function(){
-  const out = [];
-  const dead = d => d.status === 'superseded' || d.status === 'deprecated';
-  const due = D.decisions.filter(d => d.review_date && d.review_date <= today && !dead(d));
-  if (due.length) out.push('<div class="warn"><b>' + due.length + ' decision' + (due.length > 1 ? 's' : '') + ' due for review.</b><ul>' +
-    due.map(d => '<li>#' + esc(d.id) + ' ' + esc(d.title) + ' - due ' + esc(d.review_date) + '</li>').join('') + '</ul></div>');
-  if (D.generated) {
-    const days = Math.floor((Date.now() - new Date(D.generated)) / 864e5);
-    if (days > 14) out.push('<div class="warn"><b>Stale.</b> Dashboard last built ' + days + ' days ago - run /compass:sync.</div>');
-  }
-  document.getElementById('alerts').innerHTML = out.join('');
-  document.getElementById('gen').textContent = D.generated ? 'generated ' + D.generated.replace('T', ' ').slice(0, 16) : '';
+  cards.push('<section class="card c4"><header><h3>Ledger</h3><span class="dots">...</span></header>' +
+    '<div class="pair">' +
+      '<div><div class="stat lime"><span class="tri up">&#9650;</span> ' + live.length + '</div><div class="sub">Live records</div></div>' +
+      '<div><div class="stat orange"><span class="tri down">&#9660;</span> ' + proposed.length + '</div><div class="sub">Unconfirmed</div></div>' +
+    '</div></section>');
+
+  cards.push('<section class="card c4"><header><h3>Debt</h3><span class="dots">...</span></header>' +
+    '<div class="pair">' +
+      '<div><div class="stat ' + (due.length ? 'orange' : 'lime') + '">' + due.length + '</div><div class="sub">Reviews due</div></div>' +
+      '<div><div class="stat">' + D.decisions.filter(dead).length + '</div><div class="sub">Superseded</div></div>' +
+    '</div></section>');
+
+  cards.push('<section class="card c4"><header><h3>Milestone</h3><span class="dots">...</span></header>' +
+    '<div class="stat">' + pct + '%</div>' +
+    '<div class="bar"><i style="width:' + pct + '%"></i></div>' +
+    '<div class="sub">' + esc(g.milestone || 'no milestone set') + '</div></section>');
+
+  if (g.next_steps && g.next_steps.length)
+    cards.push('<section class="card ' + (due.length || staleDays > 14 ? 'c8' : 'c12') + '"><header><h3>Next steps</h3><span class="dots">...</span></header>' +
+      '<ul class="steps">' + g.next_steps.map((s, i) => '<li><b>' + String(i + 1).padStart(2, '0') + '</b>' + esc(s) + '</li>').join('') + '</ul></section>');
+
+  if (due.length)
+    cards.push('<section class="alert c4"><h3>Review due</h3><ul>' +
+      due.map(d => '<li><b>#' + esc(d.id) + '</b> ' + esc(d.title) + ' - ' + esc(d.review_date) + '</li>').join('') + '</ul></section>');
+
+  if (staleDays > 14)
+    cards.push('<section class="alert stale c4"><h3>Stale</h3><ul><li>Built ' + staleDays + ' days ago. Run <b>/compass:sync</b>.</li></ul></section>');
+
+  el('top-grid').innerHTML = cards.join('');
+  el('gen').textContent = D.generated ? 'generated ' + D.generated.replace('T', ' ').slice(0, 16) : '';
 })();
 
 // decisions table
-const S = {q:'', status:'', prov:'', mod:'', key:'date', dir:-1, page:0, per:20, open:null};
+const S = {q:'', status:'', prov:'', mod:'', key:'date', dir:-1, page:0, per:15, open:null};
 
 function fill(id, label, vals){
   const uniq = [...new Set(vals.filter(Boolean))].sort();
-  document.getElementById(id).innerHTML = '<option value="">' + label + '</option>' +
-    uniq.map(v => '<option>' + esc(v) + '</option>').join('');
+  el(id).innerHTML = '<option value="">' + label + '</option>' + uniq.map(v => '<option>' + esc(v) + '</option>').join('');
 }
-fill('fstatus', 'all statuses', D.decisions.map(d => d.status));
-fill('fprov', 'all provenance', D.decisions.map(d => d.provenance));
-fill('fmod', 'all modules', D.decisions.map(d => d.module));
+fill('fstatus', 'All statuses', D.decisions.map(d => d.status));
+fill('fprov', 'All provenance', D.decisions.map(d => d.provenance));
+fill('fmod', 'All modules', D.decisions.map(d => d.module));
 
 function view(){
   return D.decisions.filter(d =>
@@ -152,53 +305,64 @@ function render(){
   const pages = Math.max(1, Math.ceil(v.length / S.per));
   S.page = Math.min(S.page, pages - 1);
   const page = v.slice(S.page * S.per, S.page * S.per + S.per);
-  document.getElementById('rows').innerHTML = page.map(d => {
-    const head = '<tr class="h" data-f="' + esc(d.file) + '">' +
+
+  el('rows').innerHTML = page.map(d => {
+    const isOpen = S.open === d.file;
+    const overdue = d.review_date && d.review_date <= today && !dead(d);
+    const head = '<tr class="h' + (isOpen ? ' open' : '') + '" data-f="' + esc(d.file) + '">' +
       '<td>' + esc(d.id) + '</td>' +
-      '<td>' + esc(d.title) + (d.tags.length ? '<br>' + d.tags.map(t => '<span class="tag">' + esc(t) + '</span>').join('') : '') + '</td>' +
-      '<td>' + esc(d.date) + '</td><td>' + esc(d.status) + '</td>' +
-      '<td class="hide-s">' + esc(d.module) + '</td><td class="hide-s">' + esc(d.provenance) + '</td></tr>';
-    if (S.open !== d.file) return head;
+      '<td><div class="ttl">' + esc(d.title) + (overdue ? ' <span class="due">REVIEW DUE</span>' : '') + '</div>' +
+        (d.tags.length ? '<div class="tags">' + d.tags.map(t => '<span class="tag">' + esc(t) + '</span>').join('') + '</div>' : '') + '</td>' +
+      '<td style="color:var(--mut);white-space:nowrap">' + esc(d.date) + '</td>' +
+      '<td><span class="badge b-' + esc(d.status) + '">' + esc(d.status) + '</span></td>' +
+      '<td class="hide-s" style="color:var(--mut)">' + esc(d.module) + '</td>' +
+      '<td class="hide-s" style="color:var(--mut)"><i class="dot p-' + esc(d.provenance) + '"></i>' + esc(d.provenance) + '</td></tr>';
+    if (!isOpen) return head;
     const body = d.sections.map(s => '<h4>' + esc(s.heading) + '</h4>' + md(s.body)).join('') +
       (d.links.length ? '<h4>Links</h4><ul>' + d.links.map(l => '<li>' + md(l) + '</li>').join('') + '</ul>' : '') +
-      (d.superseded_by ? '<h4>Superseded by</h4><p>' + esc(d.superseded_by) + '</p>' : '') +
-      (d.review_date ? '<p class="mut">review due ' + esc(d.review_date) + '</p>' : '') +
-      '<p class="mut">.compass/decisions/' + esc(d.file) + '</p>';
-    return head + '<tr class="det"><td></td><td colspan="5">' + body + '</td></tr>';
-  }).join('') || '<tr><td colspan="6" class="mut">No decisions match.</td></tr>';
-  document.getElementById('pginfo').textContent = v.length + ' record' + (v.length === 1 ? '' : 's') + ' - page ' + (S.page + 1) + '/' + pages;
-  document.getElementById('prev').disabled = S.page === 0;
-  document.getElementById('next').disabled = S.page >= pages - 1;
+      (d.superseded_by ? '<h4>Superseded by</h4><p>#' + esc(d.superseded_by) + '</p>' : '') +
+      (d.review_date ? '<p class="path">review due ' + esc(d.review_date) + '</p>' : '') +
+      '<p class="path">.compass/decisions/' + esc(d.file) + '</p>';
+    return head + '<tr><td class="det" colspan="6">' + body + '</td></tr>';
+  }).join('') || '<tr><td colspan="6" class="empty">No decisions match.</td></tr>';
+
+  el('pginfo').textContent = (S.page + 1) + ' / ' + pages;
+  el('total').textContent = v.length;
+  el('prev').disabled = S.page === 0;
+  el('next').disabled = S.page >= pages - 1;
+  document.querySelectorAll('th[data-k]').forEach(th => th.classList.toggle('on', th.dataset.k === S.key));
 }
 
-document.getElementById('q').addEventListener('input', e => { S.q = e.target.value.toLowerCase(); S.page = 0; render(); });
+el('q').addEventListener('input', e => { S.q = e.target.value.toLowerCase(); S.page = 0; render(); });
 [['fstatus','status'], ['fprov','prov'], ['fmod','mod']].forEach(([id, k]) =>
-  document.getElementById(id).addEventListener('change', e => { S[k] = e.target.value; S.page = 0; render(); }));
+  el(id).addEventListener('change', e => { S[k] = e.target.value; S.page = 0; render(); }));
 document.querySelectorAll('th[data-k]').forEach(th => th.addEventListener('click', () => {
   const k = th.dataset.k;
   S.dir = S.key === k ? -S.dir : 1;
   S.key = k;
   render();
 }));
-document.getElementById('rows').addEventListener('click', e => {
+el('rows').addEventListener('click', e => {
   const tr = e.target.closest('tr.h');
   if (!tr) return;
   S.open = S.open === tr.dataset.f ? null : tr.dataset.f;
   render();
 });
-document.getElementById('prev').onclick = () => { S.page--; render(); };
-document.getElementById('next').onclick = () => { S.page++; render(); };
+el('prev').onclick = () => { S.page--; render(); };
+el('next').onclick = () => { S.page++; render(); };
 render();
 
 // modules
-document.getElementById('mods').innerHTML = D.modules.map(m => {
+el('mods').innerHTML = D.modules.map(m => {
   const rel = D.decisions.filter(d => d.module === m.name);
-  return '<details class="mod"><summary>' + esc(m.title) + ' <span class="mut">(' + rel.length + ' decision' + (rel.length === 1 ? '' : 's') + ')</span></summary>' +
-    md(m.body) +
-    (rel.length ? '<h4>Decisions</h4><ul>' + rel.map(d => '<li>#' + esc(d.id) + ' ' + esc(d.title) + '</li>').join('') + '</ul>' : '') +
-    (m.source ? '<p class="mut">source: ' + esc(m.source) + '</p>' : '') +
-    '</details>';
-}).join('') || '<p class="mut">No module docs yet.</p>';
+  return '<details class="mod"><summary>' + esc(m.title) +
+    '<span class="count">' + rel.length + ' decision' + (rel.length === 1 ? '' : 's') + '</span></summary>' +
+    '<div class="body">' + md(m.body) +
+    (rel.length ? '<h4>Decisions</h4><ul>' + rel.map(d => '<li>#' + esc(d.id) + ' ' + esc(d.title) +
+      ' <span class="badge b-' + esc(d.status) + '" style="font-size:.62rem">' + esc(d.status) + '</span></li>').join('') + '</ul>' : '') +
+    (m.source ? '<p class="path" style="color:var(--dim);font-size:.72rem">source: ' + esc(m.source) + '</p>' : '') +
+    '</div></details>';
+}).join('') || '<p class="empty">No module docs yet.</p>';
 </script>
 </body>
 </html>

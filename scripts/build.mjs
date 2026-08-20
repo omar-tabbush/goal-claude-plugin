@@ -78,8 +78,9 @@ const modules = readDir(join(dir, 'modules')).map(f => {
 const data = { goal, decisions, modules, generated: new Date().toISOString() };
 writeFileSync(join(dir, 'data.js'), 'window.COMPASS = ' + JSON.stringify(data, null, 2) + ';\n');
 
+// index.html is copied once so local tweaks survive; --html forces the shipped template back
 const html = join(dir, 'index.html');
-if (!existsSync(html)) copyFileSync(join(here, '..', 'templates', 'index.html'), html);
+if (!existsSync(html) || process.argv.includes('--html')) copyFileSync(join(here, '..', 'templates', 'index.html'), html);
 
 if (!process.argv.includes('--status')) {
   console.log(`compass: ${decisions.length} decisions, ${modules.length} modules -> ${join(dir, 'data.js')}`);

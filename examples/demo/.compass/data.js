@@ -387,5 +387,5 @@ window.COMPASS = {
       "body": "Everything under `.compass/`: the goal file, decision records, module docs, and the\ngenerated `data.js`.\n\n## Hard constraints\n- Frontmatter stays flat. The parser will not read nested YAML.\n- Append-only. A reversed decision gets a new record; the old one is marked\n  `superseded`, never rewritten.\n- `data.js` is generated. Hand edits are lost on the next build.\n\n## Open questions\n- Should `links` become structured (type + target) instead of free strings?"
     }
   ],
-  "generated": "2026-08-20T08:26:45.539Z"
+  "generated": "2026-08-20T09:11:47.863Z"
 };

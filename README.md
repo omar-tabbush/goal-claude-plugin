@@ -14,6 +14,7 @@ double-click.
   The dashboard is a generated view.
 - **Silent until you opt in.** No `.compass/` in a folder, no behaviour.
 - **Zero dependencies.** Node ships the whole build; nothing to install.
+- **Dark dashboard.** One screen: goal, debt, and every decision, searchable.
 
 ## Install
 
@@ -111,6 +112,7 @@ a nested stop — no plugin install, no project touched.
 ```
 node scripts/test.mjs     # self-check: build, status, hook behaviour
 node scripts/build.mjs .  # rebuild .compass/data.js for a project
+node scripts/build.mjs . --html   # also pull in a newer dashboard template
 ```
 
 MIT.
