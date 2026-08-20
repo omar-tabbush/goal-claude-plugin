@@ -1,6 +1,7 @@
 ---
 id: 0007
 title: Sessions record nothing by default
+title_ar: الجلسات لا تسجّل شيئاً افتراضياً
 date: 2026-08-06
 status: accepted
 module: capture

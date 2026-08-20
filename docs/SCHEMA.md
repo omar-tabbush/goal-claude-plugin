@@ -29,6 +29,7 @@ no multi-line lists, the parser is 30 lines and will drop them):
 |---|---|
 | `id` | zero-padded, matches filename prefix |
 | `title` | present-tense rule |
+| `title_ar` | optional Arabic title; the dashboard uses it when switched to Arabic |
 | `date` | YYYY-MM-DD |
 | `status` | proposed / accepted / superseded / deprecated |
 | `module` | must match a `modules/<name>.md` |
@@ -43,7 +44,8 @@ Alternatives rejected, Consequences. Templates in `templates/`.
 
 ## modules/<name>.md
 
-Frontmatter `module`, `title`, `source` (where it was imported from, if any).
+Frontmatter `module`, `title`, optional `title_ar`, `source` (where it was
+imported from, if any).
 Body free markdown.
 
 ## Rules

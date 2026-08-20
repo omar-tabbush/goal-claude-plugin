@@ -1,5 +1,6 @@
 ---
 module: dashboard
+title_ar: اللوحة
 title: Dashboard
 source:
 ---

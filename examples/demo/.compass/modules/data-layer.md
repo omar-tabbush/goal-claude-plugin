@@ -1,5 +1,6 @@
 ---
 module: data-layer
+title_ar: طبقة البيانات
 title: Data layer
 source: imported from vault/modules/data-layer.md
 ---

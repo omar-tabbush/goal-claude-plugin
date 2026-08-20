@@ -1,6 +1,7 @@
 ---
 id: 0010
 title: Serve the dashboard from a local MCP server
+title_ar: تقديم اللوحة عبر خادم MCP محلي
 date: 2026-08-15
 status: proposed
 module: dashboard

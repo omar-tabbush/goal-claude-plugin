@@ -14,7 +14,8 @@ double-click.
   The dashboard is a generated view.
 - **Silent until you opt in.** No `.compass/` in a folder, no behaviour.
 - **Zero dependencies.** Node ships the whole build; nothing to install.
-- **Dark dashboard.** One screen: goal, debt, and every decision, searchable.
+- **One screen.** Goal, debt, and every decision - searchable, light or dark,
+  English or Arabic (full RTL).
 
 ## Install
 
@@ -40,7 +41,12 @@ once, Claude writes any records worth keeping while the context is still fresh,
 updates the goal, and rebuilds the dashboard. Most sessions produce nothing —
 that's correct. The bar is *"would someone ask why we did this in six months?"*
 
-Open the dashboard at `.compass/index.html`.
+Open the dashboard at `.compass/index.html`. It ships light-first with a dark
+toggle (first visit follows the OS setting) and an EN/AR switch that flips the
+whole page to RTL. Both choices persist per browser.
+
+Record text renders as authored. Add `title_ar:` to a record's or module's
+frontmatter and the Arabic view uses it for that title.
 
 ## What lands in the repo
 

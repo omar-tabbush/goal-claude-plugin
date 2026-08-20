@@ -1,5 +1,6 @@
 ---
 module: capture
+title_ar: الالتقاط
 title: Capture
 source:
 ---

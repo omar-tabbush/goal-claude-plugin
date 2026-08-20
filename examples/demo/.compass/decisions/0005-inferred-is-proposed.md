@@ -1,6 +1,7 @@
 ---
 id: 0005
 title: Inferred records land as proposed, never accepted
+title_ar: القرارات المستنتجة تبقى مقترحة ولا تُقبل تلقائياً
 date: 2026-07-29
 status: accepted
 module: capture

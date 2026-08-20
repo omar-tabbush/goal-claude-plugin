@@ -1,6 +1,7 @@
 ---
 id: 0008
 title: Bundle a Node CLI for init and sync
+title_ar: شحن أداة Node لأوامر init وsync
 date: 2026-07-06
 status: superseded
 module: capture

@@ -1,6 +1,7 @@
 ---
 id: 0001
 title: Plain files in the repo are the source of truth
+title_ar: الملفات العادية في المستودع هي مصدر الحقيقة
 date: 2026-07-11
 status: accepted
 module: data-layer

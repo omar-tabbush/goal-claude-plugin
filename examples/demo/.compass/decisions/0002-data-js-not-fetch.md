@@ -1,6 +1,7 @@
 ---
 id: 0002
 title: The dashboard reads data.js, never fetch()
+title_ar: اللوحة تقرأ data.js ولا تستخدم fetch
 date: 2026-07-13
 status: accepted
 module: dashboard

@@ -1,6 +1,7 @@
 ---
 id: 0003
 title: Stop hook blocks once per session instead of spawning a headless run
+title_ar: خطاف Stop يعترض مرة واحدة بدل تشغيل جلسة منفصلة
 date: 2026-07-21
 status: accepted
 module: capture

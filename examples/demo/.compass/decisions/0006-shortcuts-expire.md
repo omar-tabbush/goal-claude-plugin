@@ -1,6 +1,7 @@
 ---
 id: 0006
 title: Deliberate shortcuts carry a review_date
+title_ar: الاختصارات المتعمدة تحمل تاريخ مراجعة
 date: 2026-04-22
 status: accepted
 module: data-layer

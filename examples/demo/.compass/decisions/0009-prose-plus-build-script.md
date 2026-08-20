@@ -1,6 +1,7 @@
 ---
 id: 0009
 title: Only the mechanical half is code
+title_ar: الجزء الآلي فقط يُكتب كشيفرة
 date: 2026-07-07
 status: accepted
 module: capture

@@ -1,6 +1,7 @@
 ---
 id: 0004
 title: Compass stays silent in folders with no .compass/
+title_ar: Compass يصمت في المجلدات بلا ‎.compass/
 date: 2026-07-21
 status: accepted
 module: capture

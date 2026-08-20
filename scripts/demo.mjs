@@ -35,6 +35,7 @@ const GOAL = {
 const dec = (id, title, o) => [`${id}-${o.slug}.md`, `---
 id: ${id}
 title: ${title}
+title_ar: ${o.ar || ''}
 date: ${o.date}
 status: ${o.status}
 module: ${o.module}
@@ -49,7 +50,7 @@ ${o.body.trim()}
 
 const DECISIONS = [
   dec('0001', 'Plain files in the repo are the source of truth', {
-    slug: 'files-are-truth', date: day(-40), status: 'accepted', module: 'data-layer',
+    ar: 'الملفات العادية في المستودع هي مصدر الحقيقة', slug: 'files-are-truth', date: day(-40), status: 'accepted', module: 'data-layer',
     tags: ['storage', 'git'], provenance: 'human', links: ['docs/SCHEMA.md'],
     body: `## Context
 The records have to survive the tool. They also have to be readable by a model at
@@ -71,7 +72,7 @@ Parsing cost on every build. Frontmatter stays flat forever - the parser is 30
 lines and nested YAML will be silently dropped.`
   }),
   dec('0002', 'The dashboard reads data.js, never fetch()', {
-    slug: 'data-js-not-fetch', date: day(-38), status: 'accepted', module: 'dashboard',
+    ar: 'اللوحة تقرأ data.js ولا تستخدم fetch', slug: 'data-js-not-fetch', date: day(-38), status: 'accepted', module: 'dashboard',
     tags: ['html', 'file-protocol'], provenance: 'human',
     body: `## Context
 The page has to open by double-clicking it. Over \`file://\`, \`fetch('./data.json')\`
@@ -91,7 +92,7 @@ The build writes \`window.COMPASS = {...}\` into \`.compass/data.js\`, loaded by
 Anyone hand-editing \`data.js\` loses it on the next build.`
   }),
   dec('0003', 'Stop hook blocks once per session instead of spawning a headless run', {
-    slug: 'stop-hook-blocks-once', date: day(-30), status: 'accepted', module: 'capture',
+    ar: 'خطاف Stop يعترض مرة واحدة بدل تشغيل جلسة منفصلة', slug: 'stop-hook-blocks-once', date: day(-30), status: 'accepted', module: 'capture',
     tags: ['hooks', 'cost'], provenance: 'human', links: ['hooks/stop.mjs'],
     body: `## Context
 Capture has to be automatic, and it has to happen while the reasoning is still in
@@ -113,7 +114,7 @@ Every session in an opted-in project ends with one extra short turn. If that eve
 grates, the fix is a stricter filter in SYNC.md, not a quieter hook.`
   }),
   dec('0004', 'Compass stays silent in folders with no .compass/', {
-    slug: 'silent-until-opt-in', date: day(-30), status: 'accepted', module: 'capture',
+    ar: 'Compass يصمت في المجلدات بلا ‎.compass/', slug: 'silent-until-opt-in', date: day(-30), status: 'accepted', module: 'capture',
     tags: ['ux'], provenance: 'mcq-answer',
     body: `## Context
 The plugin is installed once, globally, and most folders opened in a day are
@@ -132,7 +133,7 @@ once, by running \`/compass:init\`.
 A project you forgot to init records nothing, silently. That is the accepted trade.`
   }),
   dec('0005', 'Inferred records land as proposed, never accepted', {
-    slug: 'inferred-is-proposed', date: day(-22), status: 'accepted', module: 'capture',
+    ar: 'القرارات المستنتجة تبقى مقترحة ولا تُقبل تلقائياً', slug: 'inferred-is-proposed', date: day(-22), status: 'accepted', module: 'capture',
     tags: ['provenance', 'trust'], provenance: 'human',
     body: `## Context
 Stage 2 of init reads dependencies, structure and commit messages. That yields
@@ -153,7 +154,7 @@ A fresh init looks half-finished on purpose. The provenance filter on the dashbo
 exists mainly to work through that backlog.`
   }),
   dec('0006', 'Deliberate shortcuts carry a review_date', {
-    slug: 'shortcuts-expire', date: day(-120), status: 'accepted', module: 'data-layer',
+    ar: 'الاختصارات المتعمدة تحمل تاريخ مراجعة', slug: 'shortcuts-expire', date: day(-120), status: 'accepted', module: 'data-layer',
     tags: ['debt'], provenance: 'human', review: day(-3),
     body: `## Context
 "Temporary" is how permanent architecture gets built. A shortcut with a known
@@ -172,7 +173,7 @@ This record is itself overdue, which is the point - the alert strip above is rea
 not a mock.`
   }),
   dec('0007', 'Sessions record nothing by default', {
-    slug: 'six-month-filter', date: day(-14), status: 'accepted', module: 'capture',
+    ar: 'الجلسات لا تسجّل شيئاً افتراضياً', slug: 'six-month-filter', date: day(-14), status: 'accepted', module: 'capture',
     tags: ['noise', 'filter'], provenance: 'ai-suggested',
     body: `## Context
 A ledger that records every session becomes a log, and a log is not read. The tool
@@ -192,7 +193,7 @@ Some real decisions are missed. Accepted: a small trustworthy ledger beats a lar
 one nobody reads.`
   }),
   dec('0008', 'Bundle a Node CLI for init and sync', {
-    slug: 'node-cli', date: day(-45), status: 'superseded', module: 'capture',
+    ar: 'شحن أداة Node لأوامر init وsync', slug: 'node-cli', date: day(-45), status: 'superseded', module: 'capture',
     tags: ['tooling'], provenance: 'human', superseded_by: '0009',
     body: `## Context
 Early assumption that commands should be real code for determinism and tests.
@@ -209,7 +210,7 @@ Superseded once it was clear that the parts worth automating were mechanical and
 tiny, and everything else needed the model anyway.`
   }),
   dec('0009', 'Only the mechanical half is code', {
-    slug: 'prose-plus-build-script', date: day(-44), status: 'accepted', module: 'capture',
+    ar: 'الجزء الآلي فقط يُكتب كشيفرة', slug: 'prose-plus-build-script', date: day(-44), status: 'accepted', module: 'capture',
     tags: ['tooling'], provenance: 'human', links: ['0008'],
     body: `## Context
 Supersedes 0008. Splitting the work showed a clean line: judgment (what counts as a
@@ -230,7 +231,7 @@ The record format is now load-bearing for a 30-line parser. If frontmatter ever
 needs nesting, the parser gets replaced before the format changes.`
   }),
   dec('0010', 'Serve the dashboard from a local MCP server', {
-    slug: 'mcp-server', date: day(-5), status: 'proposed', module: 'dashboard',
+    ar: 'تقديم اللوحة عبر خادم MCP محلي', slug: 'mcp-server', date: day(-5), status: 'proposed', module: 'dashboard',
     tags: ['v2', 'mcp'], provenance: 'inferred-from-code',
     body: `## Context
 Inferred from the roadmap notes, not yet decided. A live server would give a real
@@ -251,6 +252,7 @@ to confirm or drop.`
 const MODULES = [
   ['data-layer.md', `---
 module: data-layer
+title_ar: طبقة البيانات
 title: Data layer
 source: imported from vault/modules/data-layer.md
 ---
@@ -268,6 +270,7 @@ generated \`data.js\`.
 `],
   ['capture.md', `---
 module: capture
+title_ar: الالتقاط
 title: Capture
 source:
 ---
@@ -284,6 +287,7 @@ the init pipeline.
 `],
   ['dashboard.md', `---
 module: dashboard
+title_ar: اللوحة
 title: Dashboard
 source:
 ---

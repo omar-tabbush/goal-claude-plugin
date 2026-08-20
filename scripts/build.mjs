@@ -55,6 +55,7 @@ const decisions = readDir(join(dir, 'decisions')).map(f => {
     file: f,
     id: String(fm.id || basename(f).split('-')[0]),
     title: fm.title || secs[0]?.heading || basename(f, '.md'),
+    title_ar: fm.title_ar || '',
     date: fm.date || '',
     status: fm.status || 'accepted',
     module: fm.module || '',
@@ -72,7 +73,7 @@ const modules = readDir(join(dir, 'modules')).map(f => {
   const src = readFileSync(join(dir, 'modules', f), 'utf8');
   const [fm, body] = parseFm(src);
   const name = fm.module || basename(f, '.md');
-  return { file: f, name, title: fm.title || name, source: fm.source || '', body: body.trim() };
+  return { file: f, name, title: fm.title || name, title_ar: fm.title_ar || '', source: fm.source || '', body: body.trim() };
 });
 
 const data = { goal, decisions, modules, generated: new Date().toISOString() };
