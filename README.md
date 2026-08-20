@@ -36,6 +36,21 @@ double-click.
 codebase for implicit choices, then ask multiple-choice questions to fill the
 gaps. Inferred records land as `proposed` until you confirm them.
 
+If your notes already live in the common Obsidian ledger layout
+(`<vault>/<name>.md`, `decisions/NNNN-*.md`, `modules/<m>/<m>.md`,
+`modules/<m>/decisions/`), the import is mechanical and runs as a script rather
+than costing model tokens:
+
+```
+node scripts/import-vault.mjs <vaultRoot> <projectDir> --dry   # preview
+node scripts/import-vault.mjs <vaultRoot> <projectDir>
+```
+
+It renumbers per-module ids into one global sequence, maps the vault's headings
+onto Context / Decision / Alternatives rejected / Consequences, flattens
+`[[wikilinks]]`, and records where each one came from in `links:`. It never
+writes to the vault and never overwrites a record you already have.
+
 After that it maintains itself. At the end of each session a `Stop` hook fires
 once, Claude writes any records worth keeping while the context is still fresh,
 updates the goal, and rebuilds the dashboard. Most sessions produce nothing —

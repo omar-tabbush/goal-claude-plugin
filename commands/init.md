@@ -18,6 +18,20 @@ template.
 Source: `$ARGUMENTS` if given, else look for an Obsidian vault for this
 project, `docs/`, `README.md`, `CLAUDE.md`, planning notes.
 
+Vault already in the standard ledger layout (`<vault>/<name>.md`,
+`decisions/NNNN-*.md`, `modules/<m>/<m>.md`, `modules/<m>/decisions/`)? Do not
+read it record by record - that is mechanical and expensive:
+
+```
+node "${CLAUDE_PLUGIN_ROOT}/scripts/import-vault.mjs" <vaultRoot> . --dry
+node "${CLAUDE_PLUGIN_ROOT}/scripts/import-vault.mjs" <vaultRoot> .
+```
+
+It renumbers ids globally, remaps the vault headings onto the compass four,
+strips wikilinks, keeps `links: [vault:<path>]`, and never writes to the vault
+or overwrites an existing record. Then read only what it could not carry over:
+the vault root map, for the goal and project-wide constraints.
+
 Pull out: the goal, stated decisions, module descriptions. One record per
 decision, `provenance: human`, `source:` on module docs pointing at where it
 came from. Do not restate the source verbatim - distil.
