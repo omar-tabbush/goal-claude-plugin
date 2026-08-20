@@ -101,5 +101,9 @@ out.push(`DECISIONS: ${decisions.length} (${decisions.filter(d => d.status === '
 out.push(due.length
   ? 'REVIEW DUE:' + due.map(d => `\n  - #${d.id} ${d.title} (${d.review_date})`).join('')
   : 'REVIEW DUE: none');
-out.push('DASHBOARD: ' + html);
+// Clickable: OSC 8 when a terminal is attached, otherwise a bare file:// URL that
+// the caller (or a markdown renderer) can turn into a link.
+const url = 'file:///' + html.split('\\').join('/').split(' ').join('%20');
+const OSC = '\u001b]8;;';
+out.push('DASHBOARD: ' + (process.stdout.isTTY ? OSC + url + '\u0007' + html + OSC + '\u0007' : url));
 console.log(out.join('\n'));

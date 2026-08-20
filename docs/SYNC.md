@@ -45,4 +45,7 @@ Run from the project dir. Regenerates `.compass/data.js`.
 ## 5. Report
 
 One line: `compass: N records, goal <changed|unchanged>` - or
-`compass: nothing to record`. Then stop. Do not commit unless asked.
+`compass: nothing to record`. Wrote records? Add the dashboard as a markdown
+link so it is clickable: `[.compass/index.html](file:///<abs path>)`.
+
+Then stop. Do not commit unless asked.
