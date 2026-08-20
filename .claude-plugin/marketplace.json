@@ -1,0 +1,11 @@
+{
+  "name": "compass-marketplace",
+  "owner": { "name": "Omar Tabbush" },
+  "plugins": [
+    {
+      "name": "compass",
+      "source": "./",
+      "description": "Folder-attached decision + goal dashboard for AI-assisted development."
+    }
+  ]
+}

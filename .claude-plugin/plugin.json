@@ -1,0 +1,9 @@
+{
+  "name": "compass",
+  "description": "Folder-attached decision + goal dashboard. Records why choices were made, auto-syncs at session end, renders a zero-dep HTML dashboard.",
+  "version": "0.1.0",
+  "author": { "name": "Omar Tabbush" },
+  "homepage": "https://github.com/omar-tabbush/goal-claude-plugin",
+  "keywords": ["adr", "decisions", "context", "dashboard", "goals"],
+  "hooks": "./hooks/hooks.json"
+}
