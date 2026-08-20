@@ -64,6 +64,9 @@ assert.equal(D.modules[0].name, 'storage');
 assert.ok(existsSync(join(proj, '.compass', 'index.html')), 'index.html copied');
 
 const status = execFileSync(node, [build, proj, '--status'], { encoding: 'utf8' });
+// the slash command passes only the flag and relies on cwd - regression: --status was read as the dir
+const statusCwd = execFileSync(node, [build, '--status'], { cwd: proj, encoding: 'utf8' });
+assert.match(statusCwd, /NORTH STAR: Ship it/, 'flag-only run resolves the project from cwd');
 assert.match(status, /NORTH STAR: Ship it/);
 assert.match(status, /REVIEW DUE:\s*\n\s*- #0001/, 'overdue review surfaces');
 

@@ -6,7 +6,8 @@ import { join, dirname, basename } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const here = dirname(fileURLToPath(import.meta.url));
-const proj = process.argv[2] || process.cwd();
+// flags may come before or instead of the dir, so never take argv[2] blindly
+const proj = process.argv.slice(2).find(a => !a.startsWith('--')) || process.cwd();
 const dir = join(proj, '.compass');
 if (!existsSync(dir)) { console.error('no .compass/ in ' + proj + ' - run /compass:init'); process.exit(1); }
 
